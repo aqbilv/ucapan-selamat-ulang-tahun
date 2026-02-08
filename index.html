@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Premium Birthday Surprise</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <audio id="bdayMusic" loop>
+    <source src="Selamat_Ulang_Tahun_feat_Lagu_Anak_Indonesia_Lagu_Anak_Terl.m4a" type="audio/mp4">
+  </audio>
+
+  <div class="container">
+    <div class="envelope-wrapper" id="envelope" onclick="openLetter()">
+      <div class="flap"></div>
+      <div class="heart"></div>
+      <div class="pocket"></div>
+      
+      <div class="letter">
+        <div class="letter-content">
+          <div class="title">Happy Birthday! 🎂</div>
+          
+          <div class="birthday-photo">
+            <img src="https://files.catbox.moe/6kydge.jpg" alt="Birthday Person">
+          </div>
+
+          <p class="text" id="typewriter"></p>
+          <p class="signature">— Dari: Aqbil</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button onclick="launchParty()">
+        <span class="emoji">🎉</span>
+        <span>Party</span>
+      </button>
+      <button onclick="spawnBalloons()">
+        <span class="emoji">🎈</span>
+        <span>Balon</span>
+      </button>
+      <button onclick="location.reload()">
+        <span class="emoji">🔄</span>
+        <span>Reset</span>
+      </button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+  <script>
+    const envelope = document.getElementById('envelope');
+    const music = document.getElementById('bdayMusic');
+    const typewriter = document.getElementById('typewriter');
+    const pesan = "Selamat ulang tahun 🎉 Semoga di usia yang baru ini, kamu selalu dikelilingi hal-hal yang membuatmu tenang, orang-orang yang tulus, dan mimpi-mimpi yang berani kamu kejar. Jangan lupa bahagia, ya. Kamu pantas untuk itu.";
+    
+    let isOpened = false;
+
+    function openLetter() {
+      if (isOpened) return;
+      isOpened = true;
+      envelope.classList.add('opened');
+      music.play().catch(e => console.log("Musik butuh interaksi"));
+      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+      
+      let i = 0;
+      function type() {
+        if (i < pesan.length) {
+          typewriter.innerHTML += pesan.charAt(i);
+          i++;
+          setTimeout(type, 35);
+        }
+      }
+      setTimeout(type, 1200);
+    }
+
+    function launchParty() {
+      if (!isOpened) return;
+      confetti({ particleCount: 100, spread: 160, origin: { y: 0.3 } });
+    }
+
+    function spawnBalloons() {
+      const colors = ['#ff4d6d', '#ff7499', '#4a90e2', '#7ed321', '#f5a623', '#9013fe'];
+      for (let i = 0; i < 20; i++) {
+        const b = document.createElement('div');
+        b.className = 'balloon';
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        b.style.background = color;
+        b.style.left = Math.random() * 100 + 'vw';
+        b.style.animationDuration = (Math.random() * 2 + 3) + 's';
+        document.body.appendChild(b);
+        setTimeout(() => b.remove(), 5000);
+      }
+    }
+  </script>
+</body>
+</html>
